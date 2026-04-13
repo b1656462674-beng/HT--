@@ -27,7 +27,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onGiftClick }) => {
 
       {/* Header */}
       <div className="flex items-center justify-between mb-3 relative z-10">
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 flex-shrink-0">
           <div className="relative">
             <img 
               src={post.author.avatar} 
@@ -40,7 +40,6 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onGiftClick }) => {
           <div>
             <div className="flex items-center space-x-2">
               <h3 className="font-bold text-gray-900 text-lg">{post.author.name}</h3>
-              {activeTemplate && <NicknameDecor template={activeTemplate} />}
             </div>
             <div className="flex items-center space-x-1 text-[10px] font-bold">
               <span className="text-gray-900">KR</span>
@@ -54,7 +53,15 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onGiftClick }) => {
             </div>
           </div>
         </div>
-        <button className="bg-indigo-600 text-white px-4 py-1 rounded-full text-sm font-bold shadow-sm hover:bg-indigo-700 transition-colors">
+
+        {/* Roaming area for cat/nickname decor */}
+        <div className="flex-1 relative h-8 mx-2 overflow-visible">
+          {activeTemplate && activeTemplate.type === 'NICKNAME_DECOR' && (
+            <NicknameDecor template={activeTemplate} />
+          )}
+        </div>
+
+        <button className="bg-indigo-600 text-white px-4 py-1 rounded-full text-sm font-bold shadow-sm hover:bg-indigo-700 transition-colors flex-shrink-0">
           关注
         </button>
       </div>

@@ -55,11 +55,11 @@ export const EffectLayer: React.FC<EffectLayerProps> = ({ template, onComplete }
 
       case 'BORDER':
         return (
-          <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden rounded-xl">
+          <div className="absolute inset-0 z-10 pointer-events-none rounded-xl">
             <motion.div
               animate={{
-                top: ["0%", "0%", "100%", "100%", "0%"],
-                left: ["0%", "100%", "100%", "0%", "0%"],
+                top: ["12px", "12px", "calc(100% - 12px)", "calc(100% - 12px)", "12px"],
+                left: ["12px", "calc(100% - 12px)", "calc(100% - 12px)", "12px", "12px"],
                 rotate: [0, 0, 90, 180, 270],
                 scale: [1, 1.2, 1, 1.2, 1]
               }}
@@ -224,15 +224,17 @@ export const NicknameDecor: React.FC<{ template: EffectTemplate }> = ({ template
   return (
     <motion.div
       animate={{
-        x: [-10, 40, -10],
-        scaleX: [1, -1, 1]
+        left: ["0%", "100%", "100%", "0%", "0%"],
+        scaleX: [-1, -1, 1, 1, -1] // -1 faces right, 1 faces left (assuming cat faces left by default)
       }}
       transition={{
-        duration: 4 / (template.config.speed || 1),
+        duration: 5 / (template.config.speed || 1),
         repeat: Infinity,
-        ease: "easeInOut"
+        ease: "linear",
+        times: [0, 0.48, 0.5, 0.98, 1]
       }}
-      className="inline-block ml-2 text-lg"
+      className="absolute top-0 text-lg flex items-center justify-center -translate-x-1/2"
+      style={{ width: '24px', height: '24px' }}
     >
       {template.config.assetUrl}
     </motion.div>
