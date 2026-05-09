@@ -5,12 +5,19 @@ import { cn } from '../lib/utils';
 
 interface EffectLayerProps {
   template: EffectTemplate;
+  instanceId?: string;
   onComplete?: () => void;
 }
 
-export const EffectLayer: React.FC<EffectLayerProps> = ({ template, onComplete }) => {
+export const EffectLayer: React.FC<EffectLayerProps> = ({ template, instanceId, onComplete }) => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Derive a stable random offset from instanceId
+  const offset = useRef({
+    x: instanceId ? (parseInt(instanceId.split('-')[1] || '0', 36) % 40) - 20 : 0,
+    y: instanceId ? (parseInt(instanceId.split('-')[1] || '1', 36) % 40) - 20 : 0
+  }).current;
 
   // Simulate gyroscope with mouse movement for web demo
   useEffect(() => {
@@ -118,8 +125,8 @@ export const EffectLayer: React.FC<EffectLayerProps> = ({ template, onComplete }
               {/* Shadow */}
               <motion.div
                 animate={{
-                  x: mousePos.x * 240 + 5,
-                  y: mousePos.y * 120 + 5,
+                  x: mousePos.x * 240 + 5 + offset.x,
+                  y: mousePos.y * 120 + 5 + offset.y,
                   opacity: 0.2
                 }}
                 transition={{ type: 'spring', damping: 15, stiffness: 60 }}
@@ -128,8 +135,8 @@ export const EffectLayer: React.FC<EffectLayerProps> = ({ template, onComplete }
               {/* Ball */}
               <motion.div
                 animate={{
-                  x: mousePos.x * 240,
-                  y: mousePos.y * 120,
+                  x: mousePos.x * 240 + offset.x,
+                  y: mousePos.y * 120 + offset.y,
                   rotate: mousePos.x * 1080
                 }}
                 transition={{ type: 'spring', damping: 12, stiffness: 80 }}

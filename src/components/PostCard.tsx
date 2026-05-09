@@ -11,19 +11,17 @@ interface PostCardProps {
 }
 
 export const PostCard: React.FC<PostCardProps> = ({ post, onGiftClick }) => {
-  const activeTemplate = post.activeEffect 
-    ? EFFECT_TEMPLATES[post.activeEffect.templateId] 
-    : null;
+  const activeEffects = post.activeEffects || [];
 
   return (
     <div className={cn(
       "relative bg-white rounded-2xl p-4 mb-4 shadow-sm border border-gray-100 transition-all duration-500",
-      activeTemplate?.type === 'BACKGROUND' && "overflow-hidden"
+      activeEffects.some(ae => EFFECT_TEMPLATES[ae.templateId]?.type === 'BACKGROUND') && "overflow-hidden"
     )}>
       {/* Effect Layer - Background & Border */}
-      {activeTemplate && (
-        <EffectLayer template={activeTemplate} />
-      )}
+      {activeEffects.map(ae => (
+        <EffectLayer key={ae.instanceId} instanceId={ae.instanceId} template={EFFECT_TEMPLATES[ae.templateId]} />
+      ))}
 
       {/* Header */}
       <div className="flex items-center justify-between mb-3 relative z-10">
@@ -35,7 +33,12 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onGiftClick }) => {
               className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm"
               referrerPolicy="no-referrer"
             />
-            {activeTemplate && <AvatarDecor template={activeTemplate} />}
+            {activeEffects
+              .filter(ae => EFFECT_TEMPLATES[ae.templateId]?.type === 'AVATAR_DECOR')
+              .map(ae => (
+                <AvatarDecor key={ae.instanceId} template={EFFECT_TEMPLATES[ae.templateId]} />
+              ))
+            }
           </div>
           <div>
             <div className="flex items-center space-x-2">
@@ -56,9 +59,12 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onGiftClick }) => {
 
         {/* Roaming area for cat/nickname decor */}
         <div className="flex-1 relative h-8 mx-2 overflow-visible">
-          {activeTemplate && activeTemplate.type === 'NICKNAME_DECOR' && (
-            <NicknameDecor template={activeTemplate} />
-          )}
+          {activeEffects
+            .filter(ae => EFFECT_TEMPLATES[ae.templateId]?.type === 'NICKNAME_DECOR')
+            .map(ae => (
+              <NicknameDecor key={ae.instanceId} template={EFFECT_TEMPLATES[ae.templateId]} />
+            ))
+          }
         </div>
 
         <button className="bg-indigo-600 text-white px-4 py-1 rounded-full text-sm font-bold shadow-sm hover:bg-indigo-700 transition-colors flex-shrink-0">
@@ -93,12 +99,12 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onGiftClick }) => {
           onClick={() => onGiftClick(post.id)}
           className={cn(
             "flex items-center space-x-1.5 px-3 py-1.5 rounded-full transition-all duration-300",
-            activeTemplate 
+            activeEffects.length > 0 
               ? "bg-purple-100 text-purple-600 shadow-sm scale-105" 
               : "text-gray-400 hover:bg-purple-50 hover:text-purple-600"
           )}
         >
-          <GiftIcon size={22} className={activeTemplate ? "animate-bounce" : ""} />
+          <GiftIcon size={22} className={activeEffects.length > 0 ? "animate-bounce" : ""} />
         </button>
       </div>
 

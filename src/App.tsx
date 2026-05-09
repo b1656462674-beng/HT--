@@ -21,8 +21,11 @@ export default function App() {
     const interval = setInterval(() => {
       const now = Date.now();
       setPosts(prev => prev.map(post => {
-        if (post.activeEffect && post.activeEffect.expiresAt < now) {
-          return { ...post, activeEffect: undefined };
+        if (post.activeEffects && post.activeEffects.length > 0) {
+          const filtered = post.activeEffects.filter(e => e.expiresAt > now);
+          if (filtered.length !== post.activeEffects.length) {
+            return { ...post, activeEffects: filtered };
+          }
         }
         return post;
       }));
@@ -42,15 +45,19 @@ export default function App() {
     if (!template) return;
 
     const now = Date.now();
+    const instanceId = `${now}-${Math.random().toString(36).substr(2, 9)}`;
+    const newEffect = {
+      instanceId,
+      templateId: template.id,
+      startTime: now,
+      expiresAt: now + template.duration
+    };
+
     setPosts(prev => prev.map(post => {
       if (post.id === activePostId) {
         return {
           ...post,
-          activeEffect: {
-            templateId: template.id,
-            startTime: now,
-            expiresAt: now + template.duration
-          }
+          activeEffects: [...(post.activeEffects || []), newEffect]
         };
       }
       return post;

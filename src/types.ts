@@ -31,6 +31,13 @@ export interface Gift {
   effectTemplateId: string;
 }
 
+export interface ActiveEffect {
+  instanceId: string;
+  templateId: string;
+  startTime: number;
+  expiresAt: number;
+}
+
 export interface Post {
   id: string;
   author: {
@@ -42,9 +49,5 @@ export interface Post {
   timestamp: string;
   likes: number;
   comments: number;
-  activeEffect?: {
-    templateId: string;
-    startTime: number;
-    expiresAt: number;
-  };
+  activeEffects?: ActiveEffect[];
 }

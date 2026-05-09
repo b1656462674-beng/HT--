@@ -56,6 +56,16 @@ export const EFFECT_TEMPLATES: Record<string, EffectTemplate> = {
       animationType: 'gyro-sand'
     }
   },
+  'basketball-tilt': {
+    id: 'basketball-tilt',
+    name: 'Basketball Tilt',
+    type: 'INTERACTIVE',
+    duration: 30000, // 30s
+    config: {
+      assetUrl: '🏀',
+      animationType: 'gyro-roll'
+    }
+  },
   'firecrackers': {
     id: 'firecrackers',
     name: 'Firecrackers',
@@ -83,6 +93,7 @@ export const FESTIVAL_GIFTS: Record<string, Gift[]> = {
     { id: 'g1', name: 'Spring Petals', icon: '🌸', price: 9, effectTemplateId: 'avatar-petals' },
     { id: 'g3', name: 'Retro Pac', icon: '👾', price: 49, effectTemplateId: 'pacman-border' },
     { id: 'g4', name: 'World Cup Ball', icon: '⚽', price: 99, effectTemplateId: 'football-tilt' },
+    { id: 'g9', name: 'Basketball', icon: '🏀', price: 89, effectTemplateId: 'basketball-tilt' },
     { id: 'g2', name: 'Kitty Friend', icon: '🐈', price: 19, effectTemplateId: 'nickname-animal' },
     { id: 'g7', name: 'Holi Splash', icon: '🎨', price: 999, effectTemplateId: 'holi-splash' },
   ],
@@ -92,6 +103,7 @@ export const FESTIVAL_GIFTS: Record<string, Gift[]> = {
   ],
   'WorldCup': [
     { id: 'g4', name: 'World Cup Ball', icon: '⚽', price: 99, effectTemplateId: 'football-tilt' },
+    { id: 'g9', name: 'Basketball', icon: '🏀', price: 89, effectTemplateId: 'basketball-tilt' },
     { id: 'g5', name: 'Magic Sand', icon: '✨', price: 199, effectTemplateId: 'sand-tilt' },
     { id: 'g6', name: 'Firecracker', icon: '🧨', price: 599, effectTemplateId: 'firecrackers' },
   ]
